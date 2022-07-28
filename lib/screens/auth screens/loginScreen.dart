@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:kunggy/components/buttomnavbar.dart';
 import 'package:kunggy/screens/auth%20screens/forgetpasswordscreen.dart';
@@ -38,6 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
       } on FirebaseAuthException catch (ex) {
         if (ex.code.toString() == "wrong-password") {
           Utils.flushBarErrorMessage("Please enter correct password", context);
+        } else if (ex.code.toString() == 'user-not-found') {
+          Utils.flushBarErrorMessage(
+              "Email address is not registered!", context);
+        } else if (ex.code.toString() == 'invalid-email') {
+          Utils.flushBarErrorMessage("Invalid Email Address", context);
         }
         // Utils.flushBarErrorMessage("$ex.code.toString()", context);
         log(ex.code.toString());
@@ -45,9 +51,49 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void getInitialMessage() async {
+    RemoteMessage? message =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (message != null) {
+      if (message.data["page"] == 'signup') {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+      } else if (message.data['page'] == 'login') {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          // content: Text(message.notification!.body.toString()),
+          content: Text("Invalid Page!"),
+          duration: Duration(seconds: 5),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    getInitialMessage();
+    //Notification when running app
+    FirebaseMessaging.onMessage.listen((message) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        // content: Text(message.notification!.body.toString()),
+        content: Text(message.data["myName"].toString()),
+        duration: Duration(seconds: 10),
+        backgroundColor: Colors.green,
+      ));
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        // content: Text(message.notification!.body.toString()),
+        content: Text("App was opened by notification"),
+        duration: Duration(seconds: 10),
+        backgroundColor: Colors.green,
+      ));
+    });
   }
 
   @override

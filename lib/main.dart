@@ -3,11 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kunggy/components/buttomnavbar.dart';
 import 'package:kunggy/screens/getstartedscreen.dart';
+import 'package:kunggy/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
+
+  await NotificationService.initialize();
 }
 
 class MyApp extends StatelessWidget {

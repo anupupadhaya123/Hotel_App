@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kunggy/screens/hotel_confirmation_code_screen.dart';
 import 'package:kunggy/screens/hotel_home_screen.dart';
@@ -15,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   double fontsize1 = 16;
   double fontsize2 = 16;
   double fontsize3 = 16;
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;

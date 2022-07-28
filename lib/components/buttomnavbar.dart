@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kunggy/constants/constants.dart';
+import 'package:kunggy/screens/Profile/userprofilescreen.dart';
 import 'package:kunggy/screens/auth%20screens/loginScreen.dart';
 import 'package:kunggy/screens/auth%20screens/registerscreen.dart';
 import 'package:kunggy/screens/home_page.dart';
 import 'package:kunggy/screens/inbox.dart';
-import 'package:kunggy/screens/Profile/userprofilescreen.dart';
 
 class Bottomnavigate extends StatefulWidget {
   @override
